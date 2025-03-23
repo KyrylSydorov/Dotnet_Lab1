@@ -22,7 +22,7 @@ namespace Sydorov_Lab1
     {
         public MainWindow()
         {
-            InitializeComponent();
+            //InitializeComponent();
         }
     }
 }
