@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Sydorov_Lab1.ViewModels;
 
 namespace Sydorov_Lab1
 {
@@ -22,7 +23,8 @@ namespace Sydorov_Lab1
     {
         public MainWindow()
         {
-            //InitializeComponent();
+            InitializeComponent();
+            DataContext = new MainViewModel();
         }
     }
 }
