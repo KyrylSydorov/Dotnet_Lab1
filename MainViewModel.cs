@@ -24,6 +24,8 @@ namespace Sydorov_Lab1.ViewModels
 
         private string _ageDisplay;
         private string _birthdayMessage;
+        private string _westernZodiacDisplay;
+        private string _chineseZodiacDisplay;
 
         public string AgeDisplay
         {
@@ -41,7 +43,40 @@ namespace Sydorov_Lab1.ViewModels
         public string BirthdayMessage
         {
             get => _birthdayMessage;
-            set { _birthdayMessage = value; OnPropertyChanged(nameof(BirthdayMessage)); }
+            set 
+            {
+                if (_birthdayMessage != value)
+                {
+                    _birthdayMessage = value; 
+                    OnPropertyChanged(nameof(BirthdayMessage));
+                }
+            }
+        }
+
+        public string WesternZodiacDisplay
+        {
+            get => _westernZodiacDisplay;
+            set
+            {
+                if (_westernZodiacDisplay != value)
+                {
+                    _westernZodiacDisplay = value;
+                    OnPropertyChanged(nameof(WesternZodiacDisplay));
+                }
+            }
+        }
+
+        public string ChineseZodiacDisplay
+        {
+            get => _chineseZodiacDisplay;
+            set
+            {
+                if (_chineseZodiacDisplay != value)
+                {
+                    _chineseZodiacDisplay = value;
+                    OnPropertyChanged(nameof(ChineseZodiacDisplay));
+                }
+            }
         }
 
         public ICommand CalculateCommand { get; }
@@ -94,6 +129,36 @@ namespace Sydorov_Lab1.ViewModels
             {
                 BirthdayMessage = string.Empty;
             }
+
+            WesternZodiacDisplay = $"Західний знак: {GetWesternZodiac(birthDate)}";
+
+            ChineseZodiacDisplay = $"Китайський знак: {GetChineseZodiac(birthDate.Year)}";
+        }
+        private string GetWesternZodiac(DateTime date)
+        {
+            int day = date.Day;
+            int month = date.Month;
+
+            string[] zodiacSigns = {
+                "Козеріг", "Водолій", "Риби", "Овен", "Телець", "Близнюки", 
+                "Рак", "Лев", "Діва", "Терези", "Скорпіон", "Стрілець", "Козеріг"
+            };
+
+            int[] zodiacChangeDays = { 20, 19, 21, 20, 21, 21, 23, 23, 23, 23, 22, 22 };
+
+            return day < zodiacChangeDays[month - 1] ? zodiacSigns[month - 1] : zodiacSigns[month];
+        }
+
+
+        private string GetChineseZodiac(int year)
+        {
+            string[] chineseZodiacs = { 
+                "Щур", "Бик", "Тигр", "Кролик", "Дракон", "Змія", 
+                "Кінь", "Коза", "Мавпа", "Півень", "Собака", "Свиня" 
+            };
+
+            int index = (year - 4) % 12;
+            return chineseZodiacs[index];
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
