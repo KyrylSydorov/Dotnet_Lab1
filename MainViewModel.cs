@@ -22,6 +22,28 @@ namespace Sydorov_Lab1.ViewModels
             }
         }
 
+        private string _ageDisplay;
+        private string _birthdayMessage;
+
+        public string AgeDisplay
+        {
+            get => _ageDisplay;
+            set 
+            {
+                if (_ageDisplay != value)
+                {
+                    _ageDisplay = value;
+                    OnPropertyChanged(nameof(AgeDisplay));
+                }
+            }
+        }
+
+        public string BirthdayMessage
+        {
+            get => _birthdayMessage;
+            set { _birthdayMessage = value; OnPropertyChanged(nameof(BirthdayMessage)); }
+        }
+
         public ICommand CalculateCommand { get; }
         public MainViewModel()
         {
@@ -30,6 +52,9 @@ namespace Sydorov_Lab1.ViewModels
 
         private void Calculate(object parameter)
         {
+            AgeDisplay = string.Empty;
+            BirthdayMessage = string.Empty;
+
             if (BirthDate == null)
             {
                 MessageBox.Show("Введіть правильну дату", "Помилка", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -38,6 +63,37 @@ namespace Sydorov_Lab1.ViewModels
 
             DateTime birthDate = BirthDate.Value;
             Console.WriteLine($"Birth date: {birthDate}");
+
+            DateTime today = DateTime.Today;
+            
+            int age = today.Year - birthDate.Year;
+            if (birthDate > today.AddYears(-age))
+            {
+                age--;
+            }
+
+            if (age < 0)
+            {
+                MessageBox.Show("Ви ще не народилися!", "Помилка", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (age > 135)
+            {
+                MessageBox.Show("Ви вже померли!", "Помилка", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            AgeDisplay = $"Ваш вік: {age} років";
+
+            if (birthDate.Day == today.Day && birthDate.Month == today.Month)
+            {
+                BirthdayMessage = "З днем народження!";
+            }
+            else
+            {
+                BirthdayMessage = string.Empty;
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
